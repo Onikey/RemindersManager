@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { MatSort, MatTableDataSource } from '@angular/material';
+import { MatTableDataSource } from '@angular/material';
 
 import { RemindersService } from '../services/reminders.service';
 
@@ -14,22 +14,42 @@ import Reminder from '../models/reminder.model';
 })
 export class RemindersListComponent implements OnInit {
 
+    private reminders = new Array<Reminder>();
+
+    public dataSource: MatTableDataSource<Reminder>;
+    public displayedColumns = ['subject', 'notes', 'remindDate', 'isActive', 'edit'];
+
     constructor(private route: ActivatedRoute, private dataService: RemindersService) { }
 
-    dataSource: MatTableDataSource<Reminder>;
-    displayedColumns = ['subject', 'notes', 'remindDate', 'isActive', 'edit'];
-
     ngOnInit() {
-        const reminders = this.route.snapshot.data['reminders'];
-        this.dataSource = new MatTableDataSource(reminders);
+        this.reminders = this.route.snapshot.data['reminders'];
+        this.dataSource = new MatTableDataSource(this.reminders);
     }
 
     public activate(id: string) {
-        this.dataService.activate(id).subscribe();
+        this.dataService.activate(id).subscribe(null, () => {
+            this.reminders[this.reminders.findIndex(x => x.id === id)].isActive = false;
+            this.refreshDataSource();
+        });
     }
 
     public deactivate(id: string) {
-        this.dataService.deactivate(id).subscribe();
+        this.dataService.deactivate(id).subscribe(null, () => {
+            this.reminders[this.reminders.findIndex(x => x.id === id)].isActive = true;
+            this.refreshDataSource();
+        });
+    }
+
+    public delete(id: string) {
+        this.dataService.delete(id).subscribe((res) => {
+            this.reminders = this.reminders.filter(x => x.id !== id);
+            this.refreshDataSource();
+        });
+    }
+
+    private refreshDataSource() {
+        // possibly memory leak or UI glitch
+        this.dataSource = new MatTableDataSource(this.reminders);
     }
 
 }

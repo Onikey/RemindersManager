@@ -1,34 +1,48 @@
-<button mat-raised-button color="accent" [routerLink]="create">Create reminder</button>
+<div class="container">
+    <button mat-raised-button color="primary" [routerLink]="'create'">Create reminder</button>
 
-<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
-    <ng-container matColumnDef="subject">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Subject</th>
-        <td mat-cell *matCellDef="let element"> {{element.subject}} </td>
-    </ng-container> -->
+        <ng-container matColumnDef="subject">
+            <th mat-header-cell *matHeaderCellDef>Subject</th>
+            <td mat-cell *matCellDef="let element">{{element.subject}}</td>
+        </ng-container>
 
-    <ng-container matColumnDef="notes">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Notes</th>
-        <td mat-cell *matCellDef="let element"> {{element.notes}} </td>
-    </ng-container>
+        <ng-container matColumnDef="notes">
+            <th mat-header-cell *matHeaderCellDef>Notes</th>
+            <td mat-cell *matCellDef="let element">{{element.notes}}</td>
+        </ng-container>
 
-    <ng-container matColumnDef="remindDate">
-        <th mat-header-cell *matHeaderCellDef>Remind date</th>
-        <td mat-cell *matCellDef="let element"> {{element.remindDate | date}} </td>
-    </ng-container>
+        <ng-container matColumnDef="remindDate">
+            <th mat-header-cell *matHeaderCellDef>Remind date</th>
+            <td mat-cell *matCellDef="let element">{{element.remindDate | date:'medium'}}</td>
+        </ng-container>
 
-    <ng-container matColumnDef="isActive">
-        <th mat-header-cell *matHeaderCellDef>Active</th>
-        <td mat-cell *matCellDef="let element"> {{element.isActive}} </td>
-    </ng-container>
+        <ng-container matColumnDef="isActive">
+            <th mat-header-cell *matHeaderCellDef>Active</th>
+            <td mat-cell *matCellDef="let element">
+                <mat-slide-toggle [checked]="element.isActive" (change)="element.isActive ? deactivate(element.id) : activate(element.id)"></mat-slide-toggle>
+            </td>
+        </ng-container>
 
-    <ng-container matColumnDef="edit">
-        <th mat-header-cell *matHeaderCellDef></th>
-        <td mat-cell *matCellDef="let element" class="edit">
-            <button mat-raised-button color="accent" [routerLink]="[element.id]">Edit</button>
-        </td>
-    </ng-container>
+        <ng-container matColumnDef="edit">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-raised-button color="accent" [routerLink]="[element.id]">Edit</button>
+                <button mat-raised-button color="warn" (click)="delete(element.id)">Delete</button>
+            </td>
+        </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;" id="{{row.id}}"></tr>
-</table>
+        <ng-container matColumnDef="emptyData">
+            <td mat-footer-cell *matFooterCellDef colspan="5">
+                <i>Hey, you don't have any reminder. You can try to create it.</i>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" id="{{row.id}}"></tr>
+        <ng-container *ngIf="dataSource.length === 0">
+            <tr mat-footer-row *matFooterRowDef="['emptyData']" class="example-second-footer-row" [class.hidden]=""></tr>
+        </ng-container>
+    </table>
+</div>

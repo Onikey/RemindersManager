@@ -7,15 +7,19 @@ import { RemindersService } from '../services/reminders.service';
 import Reminder from '../models/reminder.model';
 
 @Component({
-  selector: 'app-reminders-details',
-  templateUrl: './reminders-details.component.html',
-  styleUrls: ['./reminders-details.component.css']
+    selector: 'app-reminder-form',
+    templateUrl: './reminder-form.component.html',
+    styleUrls: ['./reminder-form.component.css']
 })
-export class RemindersDetailsComponent implements OnInit {
+export class ReminderFormComponent implements OnInit {
+
+    private reminder: Reminder;
 
     public form: FormGroup;
     public submitted = false;
-    private reminder: Reminder;
+    public isNewItem = true;
+
+    public now = new Date();
 
     constructor(
         private formBuilder: FormBuilder,
@@ -26,7 +30,9 @@ export class RemindersDetailsComponent implements OnInit {
     ngOnInit() {
         this.reminder = this.route.snapshot.data['reminder'];
 
-        if (!this.reminder) {
+        if (this.reminder) {
+            this.isNewItem = false;
+        } else {
             this.reminder = new Reminder();
         }
 
@@ -45,17 +51,28 @@ export class RemindersDetailsComponent implements OnInit {
         if (this.form.invalid) {
             return;
         }
-        this.dataService.update({
-            id: this.reminder.id,
-            isActive: this.reminder.isActive,
-            notes: this.f.notes.value,
-            subject: this.f.subject.value,
-            remindDate: this.f.remindDate.value
-        }).subscribe(
-            () => {
+
+        const observable = this.isNewItem
+            ? this.dataService.create({
+                id: null,
+                isActive: null,
+                notes: this.f.notes.value,
+                subject: this.f.subject.value,
+                remindDate: this.f.remindDate.value
+            })
+            : this.dataService.update({
+                id: this.reminder.id,
+                isActive: this.reminder.isActive,
+                notes: this.f.notes.value,
+                subject: this.f.subject.value,
+                remindDate: this.f.remindDate.value
+            });
+
+        observable.subscribe(
+            (res: any) => {
                 this.router.navigate(['/dashboard']);
             },
-            () => {
+            (error) => {
                 alert(`We can't save your reminder :(`);
             });
     }

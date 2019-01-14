@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RemindersDetailsComponent } from './reminders-details.component';
+import { ReminderFormComponent } from './reminder-form.component';
 
-describe('RemindersDetailsComponent', () => {
-  let component: RemindersDetailsComponent;
-  let fixture: ComponentFixture<RemindersDetailsComponent>;
+describe('ReminderFormComponent', () => {
+  let component: ReminderFormComponent;
+  let fixture: ComponentFixture<ReminderFormComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RemindersDetailsComponent ]
+      declarations: [ ReminderFormComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RemindersDetailsComponent);
+    fixture = TestBed.createComponent(ReminderFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

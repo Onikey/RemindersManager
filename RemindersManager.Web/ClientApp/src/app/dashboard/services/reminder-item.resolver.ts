@@ -13,7 +13,11 @@ export class ReminderItemResolver implements Resolve<Reminder> {
     resolve(
         route: ActivatedRouteSnapshot
     ): Observable<any> | Promise<any> | any {
-        const id: string = route.firstChild.params['id'];
-        return this._service.getById(id);
+        if (route.params && route.params['id']) {
+            const id: string = route.params['id'];
+            return this._service.getById(id);
+        } else {
+            return undefined;
+        }
     }
 }

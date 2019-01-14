@@ -1,7 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
-import { MatTableModule, MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule, MatDatepickerModule } from '@angular/material';
+import {
+    MatTableModule, MatButtonModule, MatCardModule,
+    MatFormFieldModule, MatInputModule, MatSlideToggleModule
+} from '@angular/material';
+
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 
 import { DashboardRoutingModule } from './dashboard.routing';
 
@@ -11,24 +18,26 @@ import { ReminderItemResolver } from './services/reminder-item.resolver';
 
 import { DashboardComponent } from './dashboard.component';
 import { RemindersListComponent } from './reminders-list/reminders-list.component';
-import { RemindersDetailsComponent } from './reminders-details/reminders-details.component';
-import { ReminderCreateComponent } from './reminder-create/reminder-create.component';
+import { ReminderFormComponent } from './reminder-form/reminder-form.component';
 
 @NgModule({
     declarations: [
         DashboardComponent,
         RemindersListComponent,
-        RemindersDetailsComponent,
-        ReminderCreateComponent
+        ReminderFormComponent
     ],
     imports: [
         CommonModule,
+        ReactiveFormsModule,
+        HttpClientModule,
         MatTableModule,
         MatButtonModule,
         MatCardModule,
         MatFormFieldModule,
         MatInputModule,
-        MatDatepickerModule,
+        MatSlideToggleModule,
+        OwlDateTimeModule,
+        OwlNativeDateTimeModule,
         DashboardRoutingModule
     ],
     providers: [RemindersService, ReminderListResolver, ReminderItemResolver]

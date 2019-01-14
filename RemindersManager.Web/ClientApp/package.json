@@ -3,8 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --proxy=http://localhost:58645/",
+    "start": "ng serve",
     "build": "ng build",
+    "buildProd": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -22,8 +23,10 @@
     "@angular/platform-browser-dynamic": "~7.2.0",
     "@angular/router": "~7.2.0",
     "core-js": "^2.5.4",
+    "ng-pick-datetime": "^7.0.0",
     "rxjs": "~6.3.3",
     "tslib": "^1.9.0",
+    "web-animations-js": "^2.3.1",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {

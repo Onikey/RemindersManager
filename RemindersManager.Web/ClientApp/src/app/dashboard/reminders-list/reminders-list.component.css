@@ -1,0 +1,21 @@
+.container {
+    width: 50em;
+    max-width: 100%;
+    margin: auto;
+}
+
+button[color="primary"] {
+    margin-bottom: 1em; 
+}
+
+button:first-child {
+    margin-right: 1em; 
+}
+
+table {
+    width: 100%;
+}
+
+.hidden {
+    display: none !important;
+}

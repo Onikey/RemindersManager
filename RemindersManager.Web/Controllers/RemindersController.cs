@@ -32,17 +32,24 @@ namespace RemindersManager.Web.Controllers
             return Ok(await dbContext.Reminders.Where(x => !x.IsCancelled && x.AuthorId == fakeAuthorId).ToListAsync());
         }
 
+        // GET api/reminders/5
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            return Ok(await dbContext.Reminders.FirstOrDefaultAsync(x => !x.IsCancelled && x.Id == id && x.AuthorId == fakeAuthorId));
+        }
+
         // POST api/reminders
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] ReminderViewModel model)
         {
             var reminder = mapper.Map<Reminder>(model);
-            reminder.Id = fakeAuthorId;
+            reminder.AuthorId = fakeAuthorId;
 
             dbContext.Reminders.Add(reminder);
             await dbContext.SaveChangesAsync();
 
-            return Ok("Reminder created.");
+            return Ok(new { Success = true, Text = "Reminder created"});
         }
 
         // PUT api/reminders/5
@@ -61,7 +68,7 @@ namespace RemindersManager.Web.Controllers
             reminder.Subject = model.Subject;
             await dbContext.SaveChangesAsync();
 
-            return Ok("Reminder updated");
+            return Ok(new { Success = true, Text = "Reminder updated" });
         }
 
         // DELETE api/reminders/5
@@ -78,7 +85,7 @@ namespace RemindersManager.Web.Controllers
             reminder.IsCancelled = true;
             await dbContext.SaveChangesAsync();
 
-            return Ok("Reminder updated");
+            return Ok(new { Success = true, Text = "Reminder is cancelled" });
         }
 
         // POST api/reminders/5/activate
@@ -95,7 +102,7 @@ namespace RemindersManager.Web.Controllers
             reminder.IsActive = true;
             await dbContext.SaveChangesAsync();
 
-            return Ok("Reminder activated.");
+            return Ok(new { Success = true, Text = "Reminder is activated" });
         }
 
         // POST api/reminders/5/deactivate
@@ -112,7 +119,7 @@ namespace RemindersManager.Web.Controllers
             reminder.IsActive = false;
             await dbContext.SaveChangesAsync();
 
-            return Ok("Reminder activated.");
+            return Ok(new { Success = true, Text = "Reminder is deactivated" });
         }
     }
 }

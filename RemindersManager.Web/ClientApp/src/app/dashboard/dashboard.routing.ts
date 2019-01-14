@@ -6,8 +6,7 @@ import { ReminderItemResolver } from './services/reminder-item.resolver';
 
 import { DashboardComponent } from './dashboard.component';
 import { RemindersListComponent } from './reminders-list/reminders-list.component';
-import { RemindersDetailsComponent } from './reminders-details/reminders-details.component';
-import { ReminderCreateComponent } from './reminder-create/reminder-create.component';
+import { ReminderFormComponent } from './reminder-form/reminder-form.component';
 
 const routes: Routes = [
     {
@@ -20,16 +19,16 @@ const routes: Routes = [
                 reminders: ReminderListResolver
             }
         }, {
+            path: 'create',
+            component: ReminderFormComponent
+        }, {
             path: ':id',
-            component: RemindersDetailsComponent,
+            component: ReminderFormComponent,
             resolve: {
                 reminder: ReminderItemResolver
             }
-        }, {
-            path: 'create',
-            component: ReminderCreateComponent
         }]
     }
 ];
 
-export const DashboardRoutingModule: ModuleWithProviders = RouterModule.forRoot(routes);
+export const DashboardRoutingModule: ModuleWithProviders = RouterModule.forChild(routes);
