@@ -41,7 +41,7 @@
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;" id="{{row.id}}"></tr>
-        <ng-container *ngIf="dataSource.length === 0">
+        <ng-container *ngIf="dataSource.data.length === 0">
             <tr mat-footer-row *matFooterRowDef="['emptyData']" class="example-second-footer-row" [class.hidden]=""></tr>
         </ng-container>
     </table>
