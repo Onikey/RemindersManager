@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RemindersManager.Web.Data;
-using System.IO;
 
 namespace RemindersManager.Web
 {
@@ -41,6 +40,8 @@ namespace RemindersManager.Web
 		{
 			if (env.IsDevelopment())
 			{
+				UpdateDatabase(app);
+
 				app.UseDeveloperExceptionPage();
 			}
 			else
@@ -71,6 +72,20 @@ namespace RemindersManager.Web
 					spa.UseAngularCliServer(npmScript: "start");
 				}
 			});
+		}
+
+		private static void UpdateDatabase(IApplicationBuilder app)
+		{
+
+			using (var serviceScope = app.ApplicationServices
+				.GetRequiredService<IServiceScopeFactory>()
+				.CreateScope())
+			{
+				using (var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>())
+				{
+					context.Database.Migrate();
+				}
+			}
 		}
 	}
 }
