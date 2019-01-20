@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
@@ -7,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RemindersManager.Web.Data;
+using RemindersManager.Web.Services;
 
 namespace RemindersManager.Web
 {
@@ -32,7 +32,7 @@ namespace RemindersManager.Web
 				configuration.RootPath = "ClientApp/dist";
 			});
 
-			services.AddAutoMapper();
+			services.AddSingleton<IRemindersService, RemindersService>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

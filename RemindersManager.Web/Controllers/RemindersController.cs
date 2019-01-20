@@ -1,125 +1,115 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using RemindersManager.Web.Data;
-using RemindersManager.Web.Entities;
+﻿using Microsoft.AspNetCore.Mvc;
+using RemindersManager.Web.Services;
 using RemindersManager.Web.ViewModels.Reminders;
+using System;
+using System.Threading.Tasks;
 
 namespace RemindersManager.Web.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class RemindersController : ControllerBase
-    {
-        private readonly ApplicationDbContext dbContext;
-        private readonly IMapper mapper;
-        private static readonly Guid fakeAuthorId = new Guid("5C60F693-BEF5-E011-A485-80EE7300C695");
+	[Route("api/[controller]")]
+	[ApiController]
+	public class RemindersController : ControllerBase
+	{
+		private readonly IRemindersService reminderService;
+		private static readonly Guid fakeAuthorId = new Guid("5C60F693-BEF5-E011-A485-80EE7300C695");
 
-        public RemindersController(ApplicationDbContext dbContext, IMapper mapper)
-        {
-            this.dbContext = dbContext;
-            this.mapper = mapper;
-        }
+		public RemindersController(IRemindersService reminderService)
+		{
+			this.reminderService = reminderService;
+		}
 
-        // GET api/reminders
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
-            return Ok(await dbContext.Reminders.Where(x => !x.IsCancelled && x.AuthorId == fakeAuthorId).ToListAsync());
-        }
+		// GET api/reminders
+		[HttpGet]
+		public async Task<IActionResult> GetAll()
+		{
+			return Ok(await reminderService.GetAll(fakeAuthorId));
+		}
 
-        // GET api/reminders/5
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(Guid id)
-        {
-            return Ok(await dbContext.Reminders.FirstOrDefaultAsync(x => !x.IsCancelled && x.Id == id && x.AuthorId == fakeAuthorId));
-        }
+		// GET api/reminders/5
+		[HttpGet("{id}")]
+		public async Task<IActionResult> GetById(Guid id)
+		{
+			var reminder = await reminderService.GetById(fakeAuthorId, id);
 
-        // POST api/reminders
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] ReminderViewModel model)
-        {
-            var reminder = mapper.Map<Reminder>(model);
-            reminder.AuthorId = fakeAuthorId;
+			if (reminder == null)
+			{
+				return NotFound("Reminder not found");
+			}
 
-            dbContext.Reminders.Add(reminder);
-            await dbContext.SaveChangesAsync();
+			return Ok(reminder);
+		}
 
-            return Ok(new { Success = true, Text = "Reminder created"});
-        }
+		// POST api/reminders
+		[HttpPost]
+		public async Task<IActionResult> Create([FromBody] ReminderViewModel model)
+		{
+			await reminderService.Create(fakeAuthorId, model.Subject, model.Notes, model.RemindDate);
 
-        // PUT api/reminders/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, [FromBody] ReminderViewModel model)
-        {
-            var reminder = await dbContext.Reminders.FindAsync(id);
+			return Ok(new { Success = true, Text = "Reminder created" });
+		}
 
-            if (reminder == null)
-            {
-                return NotFound("Reminder not found");
-            }
+		// PUT api/reminders/5
+		[HttpPut("{id}")]
+		public async Task<IActionResult> Update(Guid id, [FromBody] ReminderViewModel model)
+		{
+			var result = await reminderService.Update(fakeAuthorId, id, model.Subject, model.Notes, model.RemindDate);
 
-            reminder.Notes = model.Notes;
-            reminder.RemindDate = model.RemindDate;
-            reminder.Subject = model.Subject;
-            await dbContext.SaveChangesAsync();
+			if (result)
+			{
+				return Ok(new { Success = true, Text = "Reminder updated" });
+			}
+			else
+			{
+				return NotFound("Reminder not found");
+			}
+		}
 
-            return Ok(new { Success = true, Text = "Reminder updated" });
-        }
+		// DELETE api/reminders/5
+		[HttpDelete("{id}")]
+		public async Task<IActionResult> Delete(Guid id)
+		{
+			var result = await reminderService.Cancel(fakeAuthorId, id);
 
-        // DELETE api/reminders/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(Guid id)
-        {
-            var reminder = await dbContext.Reminders.FindAsync(id);
+			if (result)
+			{
+				return Ok(new { Success = true, Text = "Reminder is cancelled" });
+			}
+			else
+			{
+				return BadRequest("Reminder not found or has been deleted.");
+			}
+		}
 
-            if (reminder == null)
-            {
-                return NotFound("Reminder not found");
-            }
+		// POST api/reminders/5/activate
+		[HttpPost("{id}/activate")]
+		public async Task<IActionResult> Activate(Guid id)
+		{
+			var result = await reminderService.Activate(fakeAuthorId, id);
 
-            reminder.IsCancelled = true;
-            await dbContext.SaveChangesAsync();
+			if (result)
+			{
+				return Ok(new { Success = true, Text = "Reminder is activated" });
+			}
+			else
+			{
+				return BadRequest("Reminder not found or has been activated.");
+			}
+		}
 
-            return Ok(new { Success = true, Text = "Reminder is cancelled" });
-        }
+		// POST api/reminders/5/deactivate
+		[HttpPost("{id}/deactivate")]
+		public async Task<IActionResult> Deactivate(Guid id)
+		{
+			var result = await reminderService.Activate(fakeAuthorId, id);
 
-        // POST api/reminders/5/activate
-        [HttpPost("{id}/activate")]
-        public async Task<IActionResult> Activate(Guid id)
-        {
-            var reminder = await dbContext.Reminders.FindAsync(id);
-
-            if (reminder == null)
-            {
-                return NotFound("Reminder not found");
-            }
-
-            reminder.IsActive = true;
-            await dbContext.SaveChangesAsync();
-
-            return Ok(new { Success = true, Text = "Reminder is activated" });
-        }
-
-        // POST api/reminders/5/deactivate
-        [HttpPost("{id}/deactivate")]
-        public async Task<IActionResult> Deactivate(Guid id)
-        {
-            var reminder = await dbContext.Reminders.FindAsync(id);
-
-            if (reminder == null)
-            {
-                return NotFound("Reminder not found");
-            }
-
-            reminder.IsActive = false;
-            await dbContext.SaveChangesAsync();
-
-            return Ok(new { Success = true, Text = "Reminder is deactivated" });
-        }
-    }
+			if (result)
+			{
+				return Ok(new { Success = true, Text = "Reminder is deactivated" });
+			}
+			else
+			{
+				return BadRequest("Reminder not found or has been deactivated.");
+			}
+		}
+	}
 }
