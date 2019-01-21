@@ -32,7 +32,7 @@ namespace RemindersManager.Web
 				configuration.RootPath = "ClientApp/dist";
 			});
 
-			services.AddSingleton<IRemindersService, RemindersService>();
+			services.AddScoped<IRemindersService, RemindersService>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
