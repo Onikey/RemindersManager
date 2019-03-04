@@ -9,7 +9,7 @@ import Reminder from '../models/reminder.model';
 @Component({
     selector: 'app-reminder-form',
     templateUrl: './reminder-form.component.html',
-    styleUrls: ['./reminder-form.component.css']
+    styleUrls: ['./reminder-form.component.scss']
 })
 export class ReminderFormComponent implements OnInit {
 
