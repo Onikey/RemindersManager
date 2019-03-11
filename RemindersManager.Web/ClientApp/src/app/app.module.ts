@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app.routing';
 
 import { AppComponent } from './app.component';
 import { PageNotFoundComponent } from './page-not-found.component';
+import { CoreModule } from './core/core.module';
 
 @NgModule({
     declarations: [
@@ -13,6 +14,7 @@ import { PageNotFoundComponent } from './page-not-found.component';
     ],
     imports: [
         BrowserAnimationsModule,
+        CoreModule,
         AppRoutingModule
     ],
     providers: [],
