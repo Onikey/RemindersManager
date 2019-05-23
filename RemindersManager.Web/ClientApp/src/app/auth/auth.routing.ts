@@ -1,14 +1,12 @@
 import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { PageNotFoundComponent } from '../page-not-found.component';
-
 import { LoginComponent } from './login/login.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { ForgetPasswordComponent } from './forget-password/forget-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
-const appRoutes: Routes = [
+const routes: Routes = [
     {
         path: 'login',
         component: LoginComponent
@@ -29,11 +27,7 @@ const appRoutes: Routes = [
         path: '',
         redirectTo: 'login',
         pathMatch: 'full'
-    },
-    {
-        path: '**',
-        component: PageNotFoundComponent
     }
 ];
 
-export const AppRoutingModule: ModuleWithProviders = RouterModule.forChild(appRoutes);
+export const AuthRoutingModule: ModuleWithProviders = RouterModule.forChild(routes);
