@@ -2,6 +2,7 @@
   "rulesDirectory": [
     "codelyzer"
   ],
+  "extends": ["tslint-import-group-ordering"],
   "rules": {
     "arrow-return-shorthand": true,
     "callable-types": true,
@@ -20,10 +21,53 @@
       true,
       "rxjs/Rx"
     ],
+    "import-group-ordering": {
+      "severity": "warning",
+      "options": {
+        "imports-groups": [
+          {
+            "name": "dependencies"
+          },
+          {
+            "name": "common"
+          },
+          {
+            "name": "product"
+          },
+          {
+            "name": "other"
+          }
+        ],
+        "matching-rules": [
+          {
+            "type": "project",
+            "matches": "^(common)",
+            "imports-group": "common"
+          },
+          {
+            "type": "project",
+            "matches": "^(product)",
+            "imports-group": "product"
+          },
+          {
+            "type": "dependencies",
+            "imports-group": "dependencies",
+            "disable-native-nodejs-modules": true,
+            "from-package.json": true
+          },
+          {
+            "type": "project",
+            "matches": ".*",
+            "imports-group": "other"
+          }
+        ]
+      }
+    },
     "import-spacing": true,
     "indent": [
       true,
-      "spaces"
+      "spaces",
+      2
     ],
     "interface-over-type-literal": true,
     "label-position": true,

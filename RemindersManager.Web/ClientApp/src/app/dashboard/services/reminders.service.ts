@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import Reminder from '../models/reminder.model';
-import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+
 import { AuthHttpClient } from 'src/app/core/http-clients';
+
+import Reminder from '../models/reminder.model';
 
 @Injectable()
 export class RemindersService {
