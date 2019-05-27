@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.271
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemindersManager.Web", "RemindersManager.Web\RemindersManager.Web.csproj", "{155BBF4D-7607-4D6E-BF4D-8DB98A585626}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RemindersManager.Web", "RemindersManager.Web\RemindersManager.Web.csproj", "{155BBF4D-7607-4D6E-BF4D-8DB98A585626}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemindersManager.Api", "RemindersManager.API\RemindersManager.Api.csproj", "{F1CB64B7-97B8-4606-BAC5-4C695FDF70E6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RemindersManager.IdentityServer", "RemindersManager.IdentityServer\RemindersManager.IdentityServer.csproj", "{DA14E4CE-E1C4-476C-9BDD-0A023B4D186B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{155BBF4D-7607-4D6E-BF4D-8DB98A585626}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{155BBF4D-7607-4D6E-BF4D-8DB98A585626}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{155BBF4D-7607-4D6E-BF4D-8DB98A585626}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1CB64B7-97B8-4606-BAC5-4C695FDF70E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1CB64B7-97B8-4606-BAC5-4C695FDF70E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1CB64B7-97B8-4606-BAC5-4C695FDF70E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1CB64B7-97B8-4606-BAC5-4C695FDF70E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA14E4CE-E1C4-476C-9BDD-0A023B4D186B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA14E4CE-E1C4-476C-9BDD-0A023B4D186B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA14E4CE-E1C4-476C-9BDD-0A023B4D186B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA14E4CE-E1C4-476C-9BDD-0A023B4D186B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
